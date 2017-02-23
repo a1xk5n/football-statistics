@@ -1,0 +1,171 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+.clearfix:after {
+	content: '';
+	clear: both;
+	display: table;
+}
+.wrapper {
+	width: 1024px;
+	margin: 0 auto;
+}
+
+.header {
+	background-color: #e5e3e3;
+	border: 1px solid grey;
+	border-radius: 5px;
+}
+
+.header__logo-container {
+	float: left;
+}
+
+.header__logo {
+	display: inline-block;
+	padding: 10px 10px 10px 0;
+	font-size: 20px;
+	color: #777777;
+}
+
+.header__navigation-container {
+	float: left;
+}
+.header__navigation-item {
+	display: inline-block;
+	font-size: 16px;
+	color: #777777;
+	padding: 13px;
+}
+.selected {
+	color: #ffffff;
+}
+.home-page {
+	padding: 15px 0;
+}
+.league-title__container {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.league-title {
+	font-size: 50px;
+	display: inline-block;
+	padding: 5px 20px;
+	background-color: #cfcdcd;
+	border-top: 2px solid #8a8a8a;
+}
+.select-container {
+	margin-bottom: 20px;
+}
+.select-league {
+	padding: 5px 10px 5px 10px;
+	width: 250px;
+	border-radius: 5px;
+}
+
+table {
+	border: 1px solid #000;
+}
+
+.table-head {
+	background-color: #7f7f7f;
+	color: #ffffff;
+	padding: 5px 40px;
+	border-right: 1px solid #000;
+}
+
+.table__row-item {
+	padding: 5px 0;
+	text-align: center;
+	border-top: 1px solid #000;
+	border-right: 1px solid #000;
+}
+
+tr:nth-child(2n) {
+	background-color: #ffffff;
+}
+tr:nth-child(2n+1) {
+	background-color: #d9d9d9;
+}
+
+.teams-list__container {
+	margin-top: 30px;
+	margin-bottom: 50px;
+	float: left;
+}
+
+.teams-list__item {
+
+	border: 1px solid grey;
+	border-top: none;
+	padding: 10px 50px 10px 5px;
+	position: relative;
+} 
+.teams-list__item:first-child {
+	border-radius: 8px 8px 0 0;
+	border-top: 1px solid grey;
+}
+
+.teams-list__item:last-child {
+	border-radius: 0 0 8px 8px;
+}
+.teams-list .logo-container {
+	float: left;
+	margin-right: 10px;
+}
+
+.teams-list .logo-image {
+	width: 90px;
+	height: 90px;
+	cursor: pointer;
+}
+
+.teams-list__content-container {
+	float: left;
+}
+
+.teams-list__full-name {
+	font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.teams-list__short-name {
+	font-size: 18px;
+}
+
+.checkbox-container {
+	position: absolute;
+	top: 15px;
+	right: 10px;
+}
+
+.checklabel {
+	cursor: pointer;
+	user-select: none;
+	font-size: 25px;
+	color: #d9d7d7;
+}
+
+.active {
+	color: #121212;
+}
+.checkInput {
+	/*display: none;*/
+}
+.checkInput:checked + .checklabel {
+	
+}
+

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Football statistics</title>
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://use.fontawesome.com/c1f9bf1fc3.js"></script>
+    <script type='text/javascript' data-main="scripts/init.js" src='scripts/require.js'></script>
+</head>
+<body>
+   <header class="header">
+       <div class="wrapper clearfix">
+           <div class="header__logo-container">
+               <span class="header__logo" data-bind="click: $root.goToFolder"">Football Stats</span>
+           </div>
+           <div class="header__navigation-container">
+               <nav data-bind="foreach: folders">
+                   <li class="header__navigation-item" data-bind="text: $data,  css: { selected: $data == $root.chosenFolderId() }, click: $root.goToFolder"></li>
+               </nav>
+           </div>
+       </div>
+   </header>
+   <main class="home-page">
+       <div class="wrapper">
+           <div class="league-title__container">
+               <h1 class="league-title" data-bind="text: leagueTitle().name"></h1>
+           </div>
+           <div class="select-container">
+               <select class="select-league" data-bind="options: $root.avaibleLeagues, value: leagueTitle, optionsText: 'name', event: {change: changeLeagues}">
+                </select>
+           </div>
+           <table>
+               <thead>
+                   <th class="table-head">Position</th>
+                   <th class="table-head">Team</th>
+                   <th class="table-head">G</th>
+                   <th class="table-head">W</th>
+                   <th class="table-head">D</th>
+                   <th class="table-head">L</th>
+                   <th class="table-head">GS</th>
+                   <th class="table-head">GC</th>
+                   <th class="table-head">P</th>
+               </thead>
+               <tbody data-bind="foreach: leagueList">
+                   <tr>
+                       <td class="table__row-item" data-bind="text: position"></td>
+                       <td class="table__row-item" data-bind="text: teamName, click: $root.goToFolder"></td>
+                       <td class="table__row-item" data-bind="text: playedGames"></td>
+                       <td class="table__row-item" data-bind="text: wins"></td>
+                       <td class="table__row-item" data-bind="text: draws"></td>
+                       <td class="table__row-item" data-bind="text: losses"></td>
+                       <td class="table__row-item" data-bind="text: goals"></td>
+                       <td class="table__row-item" data-bind="text: goalsAgainst"></td>
+                       <td class="table__row-item" data-bind="text: points"></td>
+                   </tr>
+               </tbody>
+           </table>
+       </div>
+       <!-- <img alt="" data-bind=" attr: {'src' : icon}"> -->
+   </main>
+   <main class="teams-page">
+       <div class="wrapper">
+           <div class="league-title__container">
+               <h1 class="league-title" data-bind="text: leagueTitleTeam().name"></h1>
+           </div>
+           <div class="select-container">
+               <select class="select-league" data-bind="options: $root.leaguesTeams, value: leagueTitleTeam, optionsText: 'name', event: {change: changeLeagueTeams}">
+                </select>
+           </div>
+           <div class="teams-list__container">
+               <div class="teams-list" data-bind="foreach: currentLeagueTeams">
+                   <li class="teams-list__item clearfix">
+                       <div class="logo-container">
+                           <div class="logo">
+                               <img alt="" class="logo-image" data-bind="attr: {'src' : crestUrl}, click: $root.goToFolder.bind(null, id)">
+                           </div>
+                       </div>
+                       <div class="teams-list__content-container">
+                           <h3 class="teams-list__full-name" data-bind="text: name, click: $root.goToFolder.bind(null, id)"></h3>
+                           <h4 class="teams-list__short-name">short name : <span data-bind="text: shortName || 'no information'"></span></h4>
+                           <p>Squad market value: <span data-bind="text: squadMarketValue || 'no information'"></span></p>
+                       </div>
+                       <div class="checkbox-container">
+                            
+                           <!-- <input type="checkbox" data-bind="attr: {'id' : id, 'value': id}" class="checkInput"/> -->
+                           <div data-bind="click: $root.addFavorite.bind(null, 'favorite' + id ),attr: {'id' : 'favorite' + id } " class="checklabel"><i class="fa fa-star" aria-hidden="true"></i></div>
+                       </div>
+                   </li>
+               </div>
+           </div>
+       </div>
+   </main>
+</body>
+</html>
