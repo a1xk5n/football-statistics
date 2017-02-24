@@ -8,9 +8,8 @@ define(['knockout','jquery'], function(ko) {
     		name: 'loading'
     	}
     	let storageTeams = JSON.parse(localStorage.getItem('favoriteTeams'));
-    	console.log(storageTeams);
     	location.hash = '';
-    	self.icon = 'http://upload.wikimedia.org/wikipedia/de/d/da/Manchester_United_FC.svg';
+    	
     	self.folders = ['League Table', 'Teams'];
     	self.chosenFolderId = ko.observable('League Table');
     	self.avaibleLeagues = ko.observableArray([loadingObj]);
@@ -20,8 +19,14 @@ define(['knockout','jquery'], function(ko) {
     	self.leagueList = ko.observableArray([]);
     	self.currentLeagueTeams = ko.observableArray([]);
     	self.favoriteTeams = ko.observableArray(storageTeams);
-    	self.alert = function(folder) {
-    		console.log(123)
+    	self.teamsForFavoriteTable = ko.observableArray([]);
+    	fillFavoriteTeamsTable(self.favoriteTeams());
+    	self.currentTeamId = ko.observable();
+    	self.currentTeamName = ko.observable('');
+    	self.tabs = ['Info', 'Fixtures'];
+    	self.chosenTab = ko.observable('Info');
+    	self.changeTab = function(tabName) {
+    		self.chosenTab(tabName);
     	}
     	self.goToFolder = function(folder) {
     		if(folder == 'League Table') {
@@ -38,29 +43,30 @@ define(['knockout','jquery'], function(ko) {
     		}
     		self.chosenFolderId(folder || 'League Table');
     		location.hash = folder;
-    		console.log(folder)
+    		if(!isNaN(folder) && folder != '') {
+    			self.currentTeamId(folder);
+    			let getName = getInfo(self.currentTeamId(), 'teams/', '');
+    			getName.then(item => self.currentTeamName(item.name))
+    		}
+    		console.log(self.currentTeamId())
     	}
     	self.changeLeagues = () => {
-			let currentId = (getId(self.leagueTitle().name, leaguesArr));
-			let leagueGroups = getLeagueInfo(currentId);
+			let currentId = getId(self.leagueTitle().name, leaguesArr)
+			let leagueGroups = getInfo(currentId, 'competitions/' ,'/leagueTable');
 			leagueGroups.then(item => {
 				self.leagueList(item.standing);
 			});
 		}
 
 		self.changeLeagueTeams = () => {
-			console.log(self.leagueTitleTeam())
-			// let currentId = (getId(self.leagueTitleTeam().name, leaguesArr));
 			let currentId = self.leagueTitleTeam().id;
-			console.log(currentId)
-			let leagueTeams = getLeagueTeams(currentId);
+			let leagueTeams = getInfo(currentId, 'competitions/','/teams');
 			leagueTeams.then(item => {
 				item.teams.map(obj => {
 					let id = obj._links.self.href;
 					id = id.replace('http://api.football-data.org/v1/teams/','');
 					obj.id = id;
 				})
-				console.log(item)
 				self.currentLeagueTeams(item.teams)
 				self.favoriteTeams().map(item => {
 					let id = '#' + item;
@@ -68,38 +74,39 @@ define(['knockout','jquery'], function(ko) {
 				})
 			})
 		}
-		self.addFavorite = function(id) {
+		self.addFavorite = function(id,name) {
 			let id1 = '#' + id;
 			$(id1).toggleClass('active');
 			if(!self.favoriteTeams().includes(id)) {
-				self.favoriteTeams().push(id)
+				self.favoriteTeams().push(id);
+				self.favoriteTeams().push(name);
 			} else {
 				let itemToDel = self.favoriteTeams.indexOf(id);
-				self.favoriteTeams().splice(itemToDel, 1);
+				self.favoriteTeams().splice(itemToDel, 2);
 			}
 			localStorage.setItem('favoriteTeams', JSON.stringify(self.favoriteTeams()));
-			console.log(self.favoriteTeams())
+			fillFavoriteTeamsTable(self.favoriteTeams())
 		}
-		let getLeagues = new Promise(function(resolve, reject) {
-			let xhr = new XMLHttpRequest();
-			let url = 'https://api.football-data.org/v1/competitions/?season=2016';
-			xhr.open('GET', url, true);
-			xhr.setRequestHeader('X-Auth-Token', 'bfd683e88b534ddebb373eb7daab0069');
-			xhr.send();
-			let requestResult;
-			let res = [];
-			xhr.onload = () => {
-				let leaguesArr = [];
-				requestResult = JSON.parse(xhr.responseText);
-				requestResult.map((item) => {
-					if(item.id != 432 && item.id != 424 && item.id != 440) {
-						leaguesArr.push(new SimpleObj(item.id,(item.caption).substr(0, (item.caption).length - 7)));
-					}
-				});
-				resolve(leaguesArr);
-			}
-		});
+		self.removeFavorite = function(id) {
+			let id1 = 'favorite' + id;
+			$('#' + id1).removeClass('active');
+			let itemToDel = self.favoriteTeams.indexOf(id1);
+			self.favoriteTeams().splice(itemToDel, 2);
+			fillFavoriteTeamsTable(self.favoriteTeams());
+			localStorage.setItem('favoriteTeams', JSON.stringify(self.favoriteTeams()));
+		}
 
+		function fillFavoriteTeamsTable(array) {
+			let arrObj = [];
+			array.map( (item, index, currArray) => {
+				if(index %2 != 0) {
+					arrObj.push(new SimpleObj(currArray[index - 1].replace('favorite', ''), item))
+				}
+			})
+			self.teamsForFavoriteTable(arrObj)
+		}
+
+		let getLeagues = getInfo('?season=2016', 'competitions/', '')
 		getLeagues.then((item) => {
 			leaguesArr = item;
 			leaguesArr.map(item1 => {
@@ -123,32 +130,28 @@ define(['knockout','jquery'], function(ko) {
 		this.name = b;
 	}
 
-	function getLeagueInfo(leagueId) {
+	function getInfo(id, section ,needUrl) {
 		return new Promise(function(resolve, reject) {
 			let requestResult;
 			let xhr = new XMLHttpRequest();
-			let url = 'https://api.football-data.org/v1/competitions/' + leagueId + '/leagueTable';
+			let url = 'https://api.football-data.org/v1/' + section + id + needUrl;
 			xhr.open('GET', url, true);
 			xhr.setRequestHeader('X-Auth-Token', 'bfd683e88b534ddebb373eb7daab0069');
-			xhr.send();
+			xhr.send();		
 			xhr.onload = () => {
-				requestResult = JSON.parse(xhr.responseText);
-				resolve(requestResult);
-			}
-		})
-	}
-	
-	function getLeagueTeams(leagueId) {
-		return new Promise(function(resolve, reject) {
-			let requestResult;
-			let xhr = new XMLHttpRequest();
-			let url = 'https://api.football-data.org/v1/competitions/' + leagueId + '/teams';
-			xhr.open('GET', url, true);
-			xhr.setRequestHeader('X-Auth-Token', 'bfd683e88b534ddebb373eb7daab0069');
-			xhr.send();
-			xhr.onload = () => {
-				requestResult = JSON.parse(xhr.responseText);
-				resolve(requestResult);
+				if(id == '?season=2016') {
+					let leaguesArr = [];
+					requestResult = JSON.parse(xhr.responseText);
+					requestResult.map((item) => {
+						if(item.id != 432 && item.id != 424 && item.id != 440) {
+							leaguesArr.push(new SimpleObj(item.id,(item.caption).substr(0, (item.caption).length - 7)));
+						}
+					});
+					resolve(leaguesArr);
+				} else {
+					requestResult = JSON.parse(xhr.responseText);
+					resolve(requestResult);
+				}
 			}
 		})
 	}

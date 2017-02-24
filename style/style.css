@@ -37,6 +37,7 @@ li {
 	padding: 10px 10px 10px 0;
 	font-size: 20px;
 	color: #777777;
+	cursor: pointer;
 }
 
 .header__navigation-container {
@@ -47,6 +48,7 @@ li {
 	font-size: 16px;
 	color: #777777;
 	padding: 13px;
+	cursor: pointer;
 }
 .selected {
 	color: #ffffff;
@@ -54,12 +56,12 @@ li {
 .home-page {
 	padding: 15px 0;
 }
-.league-title__container {
+.title__container {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
-.league-title {
+.title {
 	font-size: 50px;
 	display: inline-block;
 	padding: 5px 20px;
@@ -162,10 +164,68 @@ tr:nth-child(2n+1) {
 .active {
 	color: #121212;
 }
-.checkInput {
-	/*display: none;*/
-}
-.checkInput:checked + .checklabel {
-	
+
+.favorite-teams__container {
+	float: left;
+	margin-top: 30px;
+	margin-left: 100px;
 }
 
+.favorite-teams__title {
+	background-color: #cfcdcd;
+	font-size: 20px;
+	font-weight: bold;
+	min-width: 350px;
+	border: 1px solid grey;
+	border-radius: 8px 8px 0 0;
+	padding: 10px 20px 10px 10px;
+}
+
+.favorite-teams__item {
+	border: 1px solid grey;
+	border-top: none;
+	padding: 10px 15px
+}
+
+.favorite-teams__item:last-child {
+	border-radius: 0 0 8px 8px;
+}
+.favorite-teams__team-title {
+	display: inline-block;
+	font-size: 18px;
+	padding: 5px 0;
+	cursor: pointer;
+}
+
+.favorite-teams__remove-container {
+	float: right;
+	font-size: 20px;
+}
+
+.favorite-teams__remove-button {
+	background-color: grey;
+	padding: 5px 15px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+
+.team-page__tabs-container {
+	margin-top: 30px;
+	display: inline-block;
+}
+
+.team-page__tabs-item {
+	display: inline-block;
+	margin-right: 30px;
+	font-size: 20px;
+	padding: 10px 20px;
+	border-radius: 8px;
+	border: 1px solid grey;
+	cursor: pointer;
+	user-select: none;
+}
+
+.selectedTab {
+	color: #57b1f7;
+}

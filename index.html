@@ -23,8 +23,8 @@
    </header>
    <main class="home-page">
        <div class="wrapper">
-           <div class="league-title__container">
-               <h1 class="league-title" data-bind="text: leagueTitle().name"></h1>
+           <div class="title__container">
+               <h1 class="title" data-bind="text: leagueTitle().name"></h1>
            </div>
            <div class="select-container">
                <select class="select-league" data-bind="options: $root.avaibleLeagues, value: leagueTitle, optionsText: 'name', event: {change: changeLeagues}">
@@ -57,12 +57,11 @@
                </tbody>
            </table>
        </div>
-       <!-- <img alt="" data-bind=" attr: {'src' : icon}"> -->
    </main>
    <main class="teams-page">
        <div class="wrapper">
-           <div class="league-title__container">
-               <h1 class="league-title" data-bind="text: leagueTitleTeam().name"></h1>
+           <div class="title__container">
+               <h1 class="title" data-bind="text: leagueTitleTeam().name"></h1>
            </div>
            <div class="select-container">
                <select class="select-league" data-bind="options: $root.leaguesTeams, value: leagueTitleTeam, optionsText: 'name', event: {change: changeLeagueTeams}">
@@ -82,12 +81,43 @@
                            <p>Squad market value: <span data-bind="text: squadMarketValue || 'no information'"></span></p>
                        </div>
                        <div class="checkbox-container">
-                            
-                           <!-- <input type="checkbox" data-bind="attr: {'id' : id, 'value': id}" class="checkInput"/> -->
-                           <div data-bind="click: $root.addFavorite.bind(null, 'favorite' + id ),attr: {'id' : 'favorite' + id } " class="checklabel"><i class="fa fa-star" aria-hidden="true"></i></div>
+                           <div data-bind="click: $root.addFavorite.bind(null, 'favorite' + id, name ),attr: {'id' : 'favorite' + id } " class="checklabel"><i class="fa fa-star" aria-hidden="true"></i></div>
                        </div>
                    </li>
                </div>
+           </div>
+           <div class="favorite-teams__container">
+               <div class="favorite-teams">
+                   <h2 class="favorite-teams__title" data-bind="visible: teamsForFavoriteTable().length != 0">my favorite teams</h2>
+                   <div class="favorite-teams__list" data-bind="foreach: teamsForFavoriteTable">
+                       <li class="favorite-teams__item clearfix">
+                           <p class="favorite-teams__team-title" data-bind="text: name, click: $root.goToFolder.bind(null, id)"></p>
+                           <div class="favorite-teams__remove-container">
+                               <div class="favorite-teams__remove-button" data-bind="click: $root.removeFavorite.bind(null, id)">
+                                   <i class="fa fa-trash-o" aria-hidden="true"></i>
+                               </div>
+                           </div>
+                       </li>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </main>
+   <main class="team-page">
+       <div class="wrapper">
+           <div class="title__container">
+               <h1 class="title" data-bind="text: currentTeamName"></h1>
+           </div>
+           <div class="team-page__tabs-container">
+               <div class="team-page__tabs" data-bind="foreach: tabs">
+                   <li class="team-page__tabs-item"  data-bind="text: $data,  css: { selectedTab: $data == $root.chosenTab() }, click: $root.changeTab">124</li>
+               </div>
+           </div>
+           <div class="team-page__info-tab" data-bind="visible: chosenTab() == 'Info'">
+               <h1>123</h1>
+           </div>
+           <div class="team-page__fixtures-tab" data-bind="visible: chosenTab() == 'Fixtures'">
+               <h1>2323</h1>
            </div>
        </div>
    </main>

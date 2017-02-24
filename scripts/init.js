@@ -27,15 +27,21 @@ require(['sammy'], function(sammy) {
 		var app = sammy(function() {
 			this.get('/#', function() {
 				$('.home-page').fadeIn();
-				$('.teams-page').fadeOut();
+				$('.teams-page').hide();
+				$('.team-page').hide();
 			});
 			this.get('/#Teams', function() {
 				
 				$('.teams-page').fadeIn();
-				$('.home-page').fadeOut();
+				$('.team-page').hide();
+				$('.home-page').hide();
 			});
 			this.get('#:id', function() {
-				console.log(this.params.id)
+				$('.team-page').fadeIn();
+				$('.home-page').hide();
+				$('.teams-page').hide();
+
+				// console.log(this.params.id)
 			})
 			this.get('', function() { this.app.runRoute('get', '/#') });
 		});
