@@ -25,6 +25,9 @@ define(['knockout','jquery'], function(ko) {
     	self.currentTeamName = ko.observable('');
     	self.tabs = ['Info', 'Fixtures'];
     	self.chosenTab = ko.observable('Info');
+    	self.currentTeamPages = ko.observableArray([]);
+    	self.currentTeamPlayers = ko.observableArray([]);
+    	self.chosenPage = ko.observable(1);
     	self.changeTab = function(tabName) {
     		self.chosenTab(tabName);
     	}
@@ -46,9 +49,9 @@ define(['knockout','jquery'], function(ko) {
     		if(!isNaN(folder) && folder != '') {
     			self.currentTeamId(folder);
     			let getName = getInfo(self.currentTeamId(), 'teams/', '');
-    			getName.then(item => self.currentTeamName(item.name))
+    			getName.then(item => self.currentTeamName(item.name));
+    			loadAndFillPlayersInfo(self.currentTeamId());
     		}
-    		console.log(self.currentTeamId())
     	}
     	self.changeLeagues = () => {
 			let currentId = getId(self.leagueTitle().name, leaguesArr)
@@ -95,7 +98,23 @@ define(['knockout','jquery'], function(ko) {
 			fillFavoriteTeamsTable(self.favoriteTeams());
 			localStorage.setItem('favoriteTeams', JSON.stringify(self.favoriteTeams()));
 		}
-
+		self.goToPage = function(page) {
+    		self.chosenPage(page);
+    		let needPos = -1191 * (+self.chosenPage() - 1);
+    		$('.team-squad__players-list').css( {
+    			'transform' : 'translateY(' + needPos +'px)' 
+    		});
+    		if(self.chosenPage() == self.currentTeamPages().length) {
+    			let lengthDifference = self.currentTeamPages().length * 10 - self.currentTeamPlayers().length;
+	    		$('.bottom').css({
+	    			'top' : '-' + (lengthDifference * 119) + 'px' 
+	    		});
+    		} else {
+    			$('.bottom').css({
+	    			'top' : '0' 
+	    		});
+    		}
+    	}
 		function fillFavoriteTeamsTable(array) {
 			let arrObj = [];
 			array.map( (item, index, currArray) => {
@@ -118,6 +137,22 @@ define(['knockout','jquery'], function(ko) {
 			self.avaibleLeagues(leaguesArr);
 			self.leaguesTeams(leaguesArrTeams);
 		});
+
+		function loadAndFillPlayersInfo(id) {
+			let playersRequest = getInfo(id, 'teams/', '/players');
+			let playersCount;
+			let playersArr;
+			let pageAmount;
+			let pageArr;
+			playersRequest.then(response =>{
+				playersCount = response.count;
+				playersArr = response.players.sort((a, b) => a.jerseyNumber - b.jerseyNumber);
+				pageAmount = Math.ceil(playersCount / 10);
+				pageArr = Array.apply(null, {length: pageAmount}).map(Number.call, Number).map(item => item + 1);
+				self.currentTeamPages(pageArr);
+				self.currentTeamPlayers(playersArr);
+			});
+		}
 
 	}
 
@@ -155,6 +190,8 @@ define(['knockout','jquery'], function(ko) {
 			}
 		})
 	}
+
+
 });
 
 

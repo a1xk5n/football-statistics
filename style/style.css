@@ -229,3 +229,81 @@ tr:nth-child(2n+1) {
 .selectedTab {
 	color: #57b1f7;
 }
+
+.team-squad-container {
+	float: left;
+	margin-top: 30px;
+}
+
+.team-squad__title {
+	font-size: 20px;
+	padding: 10px 50px 10px 10px;
+	border-radius: 8px;
+	border: 1px solid grey;
+	background-color: #cfcdcd;
+}
+
+.team-squad__paging-container {
+	margin-top: 20px;
+	font-size: 0;
+	margin-bottom: 30px;
+
+	position: relative;
+}
+
+.team-squad__page {
+	display: inline-block;
+	padding: 10px;
+	font-size: 20px;
+	cursor: pointer;
+	border: 1px solid grey;
+	border-right: none;
+}
+.team-squad__page:first-child {
+	border-radius: 8px 0 0 8px;
+}
+.team-squad__page:last-child {
+	border-right: 1px solid grey;
+	border-radius: 0 8px 8px 0;
+}
+
+.team-squad__page.active {
+	color: #57b1f7;
+}
+
+.team-squad__players-container {
+	max-height: 1191px;
+	overflow: hidden;
+}
+.team-squad__players-list {
+	transform: translateY(0);
+}
+.team-squad__players-item {
+	border: 1px solid grey;
+	border-top: none;
+	padding: 15px 50px 15px 10px;
+}
+
+.team-squad__players-item:nth-child(10n + 1) {
+	border-top: 1px solid grey;
+	border-radius: 8px 8px 0 0;
+}
+
+.team-squad__players-item:nth-child(10n),
+.team-squad__players-item:last-child {
+	border-radius: 0 0 8px 8px;
+}
+
+.team-squad__players-name {
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.team-squad__players-info {
+	margin-top: 5px;
+}
+
+.bottom {
+	top: 0px;
+}

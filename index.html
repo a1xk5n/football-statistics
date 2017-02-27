@@ -113,8 +113,26 @@
                    <li class="team-page__tabs-item"  data-bind="text: $data,  css: { selectedTab: $data == $root.chosenTab() }, click: $root.changeTab">124</li>
                </div>
            </div>
-           <div class="team-page__info-tab" data-bind="visible: chosenTab() == 'Info'">
-               <h1>123</h1>
+           <div class="team-page__info-tab clearfix" data-bind="visible: chosenTab() == 'Info'">
+               <div class="team-squad-container">
+                   <h3 class="team-squad__title">Team squad</h3>
+                   <div class="team-squad__paging-container" data-bind="foreach: currentTeamPages">
+                        <li class="team-squad__page" data-bind="text: $data, css: {active: $data == $root.chosenPage()}, click: $root.goToPage"></li>
+                   </div>
+                   <div class="team-squad__players-container">
+                       <div class="team-squad__players-list" data-bind="foreach: currentTeamPlayers">
+                           <li class="team-squad__players-item">
+                               <h4 class="team-squad__players-name"><span data-bind="text: jerseyNumber || 0"></span>. <span data-bind="text: name"></span></h4>
+                               <p class="team-squad__players-info">Birth date: <span data-bind="text: dateOfBirth"></span></p>
+                               <p class="team-squad__players-info">Position <span data-bind="text: position"></span></p>
+                               <p class="team-squad__players-info">Market value: <span data-bind="text: marketValue"></span></p>
+                           </li>
+                       </div>
+                   </div>
+                   <div class="team-squad__paging-container bottom" data-bind="foreach: currentTeamPages">
+                        <li class="team-squad__page" data-bind="text: $data, css: {active: $data == $root.chosenPage()}, click: $root.goToPage"></li>
+                   </div>
+               </div>
            </div>
            <div class="team-page__fixtures-tab" data-bind="visible: chosenTab() == 'Fixtures'">
                <h1>2323</h1>
